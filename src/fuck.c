@@ -11,7 +11,7 @@
 
 static HANDLE hExeHeap = NULL;
 
-void InitExeHeap(){
+static void InitExeHeap(){
     hExeHeap=HeapCreate(HEAP_CREATE_ENABLE_EXECUTE,0,0);
 }
 
@@ -70,6 +70,10 @@ static void ReadNextCode(const char* source,Operator* op,int* count){
 }
 
 Fucker CompileFucker(const char* source,CompileFuckerResult* result){
+    const char* sourceBase = source;
+    if(result){
+        result->wrongLoop = 0;
+    }
     GROWING dest;
     InitGrowing(&dest);
 
@@ -143,6 +147,13 @@ Fucker CompileFucker(const char* source,CompileFuckerResult* result){
         case oEND:
         {
             for(i = 0; i<opCount; ++i){
+                if(!loopStackHead){
+                    if(result){
+                        result->endingChar = ']';
+                        result->wrongLoop = 1;
+                        goto end;
+                    }
+                }
                 int bodyBegin = *(--loopStackHead);
                 int bodySize = dest.size-bodyBegin;
                 int foreOff = bodySize+5;
@@ -164,12 +175,19 @@ Fucker CompileFucker(const char* source,CompileFuckerResult* result){
         }
     }
 
+end:
+
+    if(loopStackHead && result){
+        result->wrongLoop = 1;
+    }
+
     //Function Footer
     Grow(&dest,2,0x8B,0xE5);//mov esp,ebp
     Grow(&dest,1,0x5D);//pop ebp
     Grow(&dest,1,0xC3);//ret
 
     if(result){
+        result->compiledSrcSize = source-sourceBase;
         result->size = dest.size;
     }
 

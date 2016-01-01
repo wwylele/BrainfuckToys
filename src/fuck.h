@@ -9,7 +9,9 @@ typedef void(__cdecl* Fucker)(
     byte* workSpace);
 typedef struct tagCompileFuckerResult{
     char endingChar;
+    int compiledSrcSize;
     int size;
+    int wrongLoop;
 }CompileFuckerResult;
 Fucker CompileFucker(const char* source,CompileFuckerResult* result);
 void FreeFucker(Fucker fucker);
