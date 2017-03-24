@@ -1,7 +1,8 @@
-### FuckCompiler
+### BrainfuckToys
 
-This repo makes no sence.
+This repo contains some of my toys about brainfuck:
 
-If you want, you can call it a Brainfuck 'compiler' on win32.
+ - FuckCompiler: a brainfuck compiler for Win32 x86
+ - Metafuck: a compile-time brainfuck 'compiler' using metaprogramming
 
-FuckCompiler is licensed under the WTFPL License. Refer to the LICENSE file included.
+BrainfuckToys is licensed under the WTFPL License. Refer to the LICENSE file included.
