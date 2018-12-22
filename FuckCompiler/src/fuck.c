@@ -1,6 +1,6 @@
 
 #if defined(_M_X64) || !defined(WIN32)
-#error "Can be comiled only to 32-bit Windows program!"
+#error "Can be compiled only to 32-bit Windows program!"
 #endif
 
 #include "fuck.h"
